@@ -1,12 +1,12 @@
 import streamlit as st
 import psycopg2
 import psycopg2.extras
-from confing import get_MinhaConexaoBD
+from confing import get_repositorio
 
 
 class CRUDapp:
     def __init__(self):
-        self.repo = get_MinhaConexaoBD()
+        self.repo = get_repositorio()
         self.conn = self.repo.get_connection()
         if self.conn is None:
             st.stop()
