@@ -1,0 +1,6 @@
+#ignorar arquivos do streamlit com senhas
+.streamlit/secrets.toml
+
+#ignorar arquivos temporários do Python
+__python__/
+*.pyc
