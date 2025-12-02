@@ -2,44 +2,26 @@ import streamlit as st
 import psycopg2
 from psycopg2 import OperationalError
 
-class MinhaConexaoBD:
-
+class repositorio:
     def __init__(self):
-        
+        self.conn = None
         try:
+            
             self.conn = psycopg2.connect(
                 host=st.secrets["postgres"]["host"],
                 port=st.secrets["postgres"]["port"],
-                dbname=st.secrets["postgres"]["database"],
+                dbname=st.secrets["postgres"]["dbname"],
                 user=st.secrets["postgres"]["user"],
-                password=st.secrets["postgres"]["password"]
+                password=st.secrets["postgres"]["password"],
+                sslmode="require"
             )
         except OperationalError as e:
-            st.error(f"Erro ao conectar ao PostgresSQL: {e}")
-            self.conn = None
+            st.error(f"Erro ao conectar ao PostgreSQL: {e}")
+
     def get_connection(self):
         return self.conn
-    
-    def tabela_db(self):
-        if self.conn:
-            try:
-                with self.conn.cursor() as cursor:
-                    cursor.execute("""CREATE TABLE IF NOT EXISTS categorias (
-                                id SERIAL PRIMARY KEY,
-                                nome VARCHAR(100) NOT NULL UNIQUE,
-                                descricao TEXT         
-                                   )
-                                """)
-                    
-                    self.conn.commit()
-            except psycopg2.Error as e:
-                st.error(f"Erro ao inicializar a tabela 'categoria' : {e}")
-                self.conn.rollback()
-@st.cache_resource
-def get_MinhaConexaoBD():
 
-    print("--- INICIANDO NOVO REPOSITORIO ---")
-    repo = MinhaConexaoBD()
-    if repo.get_connection():
-        repo.tabela_db()
-    return repo
+
+@st.cache_resource
+def get_repositorio():
+    return repositorio()
