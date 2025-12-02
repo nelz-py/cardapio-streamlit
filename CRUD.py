@@ -25,7 +25,7 @@ class CRUDapp:
     def run(self):
         st.sidebar.title("Informações Sobre")
         
-        # 1. Busca os dados
+        
         categories = self.get_all_categories()
         category_names = [cat['nome'] for cat in categories]
         
